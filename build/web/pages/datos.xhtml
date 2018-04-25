@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Lista de jugadores</title>
+    </h:head>
+    <h:body>
+        <h:form id="idForm">
+            <p:growl id="mensaje" showDetail="true"></p:growl>
+            <p:dataTable id="idTabla" 
+                         var="registro" 
+                         value="#{jugadorController.listaRegistro}" 
+                         scrollable="true" 
+                         editable="true" 
+                         selectionMode="single" 
+                         selection="#{jugadorController.jugadorseleccionado}" 
+                         rowKey="#{registro.idJugador}"
+                         emptyMessage="No hay elementos">
+                    <f:facet name="header">
+                        CRUD JSF Jugador
+                    </f:facet>
+                    <!-- implementar metodos para el onrowedit -->
+                    <!--<p:ajax event="rowInsert" listener="#{jugadorController.onRowInsert}" update=":idForm:mensaje"></p:ajax>-->
+                    <p:ajax event="rowSelect" listener="#{jugadorController.onRowSelect}" update=":idForm:mensaje"></p:ajax>
+                    <p:ajax event="rowEdit" listener="#{jugadorController.onRowEdit}" update=":idForm:mensaje"></p:ajax>
+                    <p:ajax event="rowEditCancel" listener="#{jugadorController.onRowCancel}" update=":idForm:mensaje"></p:ajax>
+            <p:column >
+                <f:facet name="header">Id Usuario</f:facet>
+                #{registro.idJugador}
+            </p:column>  
+                    
+            <p:column headerText="Nombre del Jugador">
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputText value="#{registro.nombre}"></h:outputText>
+                    </f:facet>
+                    <f:facet name="input">
+                        <p:inputText value="#{registro.nombre}"></p:inputText>
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+                    
+            <p:column headerText="Editar">
+                <p:rowEditor/>
+            </p:column>
+            <p:column>
+                <p:commandButton value="eliminar"
+                                 icon="ui-icon-trash"
+                                 actionListener="#{jugadorController.eliminarRegistro(registro)}"
+                                 update=":idForm:idTabla"
+                                 ajax="true">
+                </p:commandButton>
+            </p:column>
+            </p:dataTable>
+            </h:form>
+    </h:body>
+</html>
